@@ -2,9 +2,9 @@ import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
-// import { getBalance, payInvoice, createInvoice } from './lightning/lnd-webln';
+import { getBalance, payInvoice, createInvoice } from '@/lightning/lnd-webln';
 // import { getBalance, createInvoice, payInvoice } from "@/lightning/lnd-rest"
-import { getBalance, createInvoice, payInvoice } from "@/lightning/lnd-grpc"
+// import { getBalance, createInvoice, payInvoice } from "@/lightning/lnd-grpc"
 
 function SendModal({ onClose }) {
   const [invoice, setInvoice] = useState('');
