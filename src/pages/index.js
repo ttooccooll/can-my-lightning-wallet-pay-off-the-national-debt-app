@@ -236,9 +236,7 @@ export default function Home() {
       <main className={styles.main}>
         <h3>Balance: {balance} sats</h3>
         <h3>USA national debt: {fedDebt ? usdToSats(fedDebt, price) : 'Loading...'} sats</h3>
-        <h3>Price of bitcoin in dollars: {price} dollars</h3>
-        <h3>Price of bitcoin in sats: {usdToSats(price, price)} sats</h3>
-        <h3>Your balance as a percentage of USA the national debt: {calculatePercentage()}%</h3>
+        <h3>Your balance as a percentage of the USA national debt: {calculatePercentage()}%</h3>
         <h3>Can you currently pay off the USA national debt: {canPayOffDebt() ? 'Yes' : 'No'}</h3>
         <div className={styles.buttonRow}>
           <button className={styles.button} onClick={() => setShowSendModal(true)}>Send</button>
