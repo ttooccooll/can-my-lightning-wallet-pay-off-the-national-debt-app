@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
+import axios from 'axios';
 import { getBalance, payInvoice, createInvoice } from '@/lightning/lnd-webln';
 // import { getBalance, createInvoice, payInvoice } from "@/lightning/lnd-rest"
 // import { getBalance, createInvoice, payInvoice } from "@/lightning/lnd-grpc"
@@ -86,6 +87,25 @@ export default function Home() {
   const [showSendModal, setShowSendModal] = useState(false);
   const [showReceiveModal, setShowReceiveModal] = useState(false);
   const [balance, setBalance] = useState(null);
+  const [fedDebt, setFedDebt] = useState(null);
+  const [price, setPrice] = useState(null);
+
+  const usdToSats = (usdAmount) => {
+    return Math.round(usdAmount * 1e8 / price);
+  };
+
+  const getPrice = () => {
+    axios
+      .get("https://api.coinbase.com/v2/prices/BTC-USD/spot")
+      .then((res) => {
+        const formattedPrice = Number(res.data.data.amount).toFixed(4)
+        setPrice(formattedPrice);
+        updateChartData(formattedPrice);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const fetchBalance = async () => {
     const balanceResult = await getBalance();
@@ -98,8 +118,112 @@ export default function Home() {
   };
 
   useEffect(() => {
+    getPrice();
     if (!balance) fetchBalance();
   }, [balance]);
+
+  useEffect(() => {
+    const priceInterval = setInterval(() => {
+      getPrice();
+    }, 1000);
+    return () => {
+      clearInterval(priceInterval);
+    };
+  }, []);
+
+  async function fetchNationalDebt() {
+    const url = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?format=json&sort=-record_date&limit=1';
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching national debt data:', error);
+        return null;
+    }
+  }
+  
+  async function displayNationalDebt() {
+    const debtData = await fetchNationalDebt();
+    console.log('Debt Data:', debtData);
+    if (debtData && debtData.data) {
+        const firstDataRow = debtData.data[0];
+        if (firstDataRow) {
+            const totalPublicDebtOutstanding = firstDataRow.tot_pub_debt_out_amt;
+            if (totalPublicDebtOutstanding !== undefined && totalPublicDebtOutstanding !== null) {
+                console.log('Total Public Debt Outstanding:', totalPublicDebtOutstanding);
+                const firstTwoDigits = totalPublicDebtOutstanding.toString().slice(0, 2);
+                console.log('First Two Digits:', firstTwoDigits);
+                const fedDebt = document.getElementById('fedDebt');
+                console.log('Fed Debt:', fedDebt);
+                if (fedDebt) {
+                    fedDebt.textContent = `US National Debt: $${totalPublicDebtOutstanding}`;
+                } else {
+                    console.error('Fed Debt not found.');
+                }
+            } else {
+                console.error('Total public debt outstanding data not available or null/undefined.');
+                const fedDebt = document.getElementById('fedDebt');
+                if (fedDebt) {
+                    fedDebt.textContent = `Fed's: Data Not Available`;
+                } else {
+                    console.error('Fed Debt not found.');
+                }
+            }
+        } else {
+            console.error('No data rows found.');
+        }
+    } else {
+        console.log('Failed to fetch national debt data or data format is incorrect.');
+    }
+  }
+  
+  useEffect(() => {
+    async function fetchData() {
+      await fetchNationalDebt();
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    // Update national debt when fetched
+    displayNationalDebt();
+  }, );
+
+  async function displayNationalDebt() {
+    // Function remains the same, just update setFedDebt with the fetched value
+    const debtData = await fetchNationalDebt();
+    if (debtData && debtData.data) {
+      const firstDataRow = debtData.data[0];
+      if (firstDataRow) {
+        const totalPublicDebtOutstanding = firstDataRow.tot_pub_debt_out_amt;
+        if (totalPublicDebtOutstanding !== undefined && totalPublicDebtOutstanding !== null) {
+          setFedDebt(totalPublicDebtOutstanding);
+        } else {
+          setFedDebt('Data Not Available');
+        }
+      }
+    }
+  }
+
+  const calculatePercentage = () => {
+    if (balance !== null && fedDebt !== null) {
+      const debtInSats = usdToSats(fedDebt, price);
+      const percentage = (balance / debtInSats) * 100;
+      return percentage.toFixed(50); 
+    } else {
+      return 'Loading...';
+    }
+  };
+
+  const canPayOffDebt = () => {
+    if (balance !== null && fedDebt !== null) {
+      return balance >= usdToSats(fedDebt, price); // Check if balance is greater than or equal to national debt
+    } else {
+      return 'Loading...';
+    }
+  };
 
   return (
     <>
@@ -110,7 +234,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <h3>Balance: {balance}</h3>
+        <h3>Balance: {balance} sats</h3>
+        <h3>USA national debt: {fedDebt ? usdToSats(fedDebt, price) : 'Loading...'} sats</h3>
+        <h3>Price of bitcoin in dollars: {price} dollars</h3>
+        <h3>Price of bitcoin in sats: {usdToSats(price, price)} sats</h3>
+        <h3>Your balance as a percentage of USA the national debt: {calculatePercentage()}%</h3>
+        <h3>Can you currently pay off the USA national debt: {canPayOffDebt() ? 'Yes' : 'No'}</h3>
         <div className={styles.buttonRow}>
           <button className={styles.button} onClick={() => setShowSendModal(true)}>Send</button>
           <button className={styles.button} onClick={() => setShowReceiveModal(true)}>Receive</button>
