@@ -91,6 +91,7 @@ export default function Home() {
   const [fedDebt, setFedDebt] = useState(null);
   const [price, setPrice] = useState(null);
   const [balanceFact, setBalanceFact] = useState('');
+  const [musicPlaying, setMusicPlaying] = useState(false);
 
 // Function to generate a historical fact for a specific number
 async function generateFactForNumber(number) {
@@ -123,22 +124,22 @@ const fetchBalanceFact = async () => {
 };
 
 useEffect(() => {
-  if (typeof window !== 'undefined') {
-    const musicSound = new Audio("/Eric.wav");
-    const playMusicOnLoad = () => {
-      musicSound.play().catch(error => {
-        console.error('Error playing music:', error);
-      });
-    };
-    playMusicOnLoad();
-    return () => {
-      musicSound.pause();
-    };
-  }[];
   fetchBalanceFact();
 }, [balance]);
 
+const playMusicOnClick = () => {
+  if (!musicPlaying && typeof window !== 'undefined') {
+    const musicSound = new Audio("/Eric.wav");
+    musicSound.play().catch(error => {
+      console.error('Error playing music:', error);
+    });
+    setMusicPlaying(true);
 
+    musicSound.addEventListener('ended', () => {
+      setMusicPlaying(false);
+    });
+  }
+};
 
   const usdToSats = (usdAmount) => {
     return Math.round(usdAmount * 1e8 / price);
@@ -281,7 +282,7 @@ useEffect(() => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main className={styles.main} onClick={playMusicOnClick}>
         <h1>StresS WalLet</h1>
         <h2>Use this wallet whenever you&apos;re feeling too calm and need a healthy dose of chaos.</h2>
         <h3>Balance: {balance} sats</h3>
