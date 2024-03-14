@@ -92,23 +92,6 @@ export default function Home() {
   const [price, setPrice] = useState(null);
   const [balanceFact, setBalanceFact] = useState('');
 
-  useEffect(() => {
-    // Dynamically create Audio object only on the client-side
-    if (typeof window !== 'undefined') {
-      const musicSound = new Audio("/Eric.wav");
-      const playMusicOnLoad = () => {
-        musicSound.play().catch(error => {
-          console.error('Error playing music:', error);
-        });
-      };
-      playMusicOnLoad();
-      return () => {
-        musicSound.pause();
-      };
-    }
-  }, []);
-  
-
 // Function to generate a historical fact for a specific number
 async function generateFactForNumber(number) {
   const apiUrl = `http://numbersapi.com/${number}/math`;
@@ -140,6 +123,18 @@ const fetchBalanceFact = async () => {
 };
 
 useEffect(() => {
+  if (typeof window !== 'undefined') {
+    const musicSound = new Audio("/Eric.wav");
+    const playMusicOnLoad = () => {
+      musicSound.play().catch(error => {
+        console.error('Error playing music:', error);
+      });
+    };
+    playMusicOnLoad();
+    return () => {
+      musicSound.pause();
+    };
+  }[];
   fetchBalanceFact();
 }, [balance]);
 
