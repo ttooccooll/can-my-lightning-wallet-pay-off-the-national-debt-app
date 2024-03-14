@@ -7,6 +7,7 @@ import { getBalance, payInvoice, createInvoice } from '@/lightning/lnd-webln';
 // import { getBalance, createInvoice, payInvoice } from "@/lightning/lnd-rest"
 // import { getBalance, createInvoice, payInvoice } from "@/lightning/lnd-grpc"
 
+
 function SendModal({ onClose }) {
   const [invoice, setInvoice] = useState('');
   const [paymentMessage, setPaymentMessage] = useState('');
@@ -91,6 +92,24 @@ export default function Home() {
   const [price, setPrice] = useState(null);
   const [balanceFact, setBalanceFact] = useState('');
 
+  useEffect(() => {
+    // Dynamically create Audio object only on the client-side
+    if (typeof window !== 'undefined') {
+      const musicSound = new Audio("/Eric.wav");
+      const playMusicOnLoad = () => {
+        musicSound.play().catch(error => {
+          console.error('Error playing music:', error);
+        });
+      };
+      playMusicOnLoad();
+  
+      // Clean up function to stop music when component unmounts
+      return () => {
+        musicSound.pause();
+      };
+    }
+  }, []);
+  
 
 // Function to generate a historical fact for a specific number
 async function generateFactForNumber(number) {
@@ -125,6 +144,7 @@ const fetchBalanceFact = async () => {
 useEffect(() => {
   fetchBalanceFact();
 }, [balance]);
+
 
 
   const usdToSats = (usdAmount) => {
