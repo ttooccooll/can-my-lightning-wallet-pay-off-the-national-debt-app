@@ -22,7 +22,8 @@ input {
 }
 
 label {
-  color: #00ff00;
+  color: black;
+  background: yellow;
 }
 
 span {
