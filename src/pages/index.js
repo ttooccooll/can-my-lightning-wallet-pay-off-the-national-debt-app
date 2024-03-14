@@ -270,7 +270,7 @@ useEffect(() => {
       </Head>
       <main className={styles.main}>
         <h1>StresS WalLet</h1>
-        <h2>Use this wallet whenever you're feeling too calm and need a healthy dose of chaos.</h2>
+        <h2>Use this wallet whenever you&apos;re feeling too calm and need a healthy dose of chaos.</h2>
         <h3>Balance: {balance} sats</h3>
         <h3>USA national debt: {fedDebt ? usdToSats(fedDebt, price) : 'Loading...'} sats</h3>
         <h3>Your balance as a percentage of the USA national debt: {calculatePercentage()}%</h3>
