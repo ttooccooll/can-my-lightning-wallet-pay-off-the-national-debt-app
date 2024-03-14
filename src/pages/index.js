@@ -102,8 +102,6 @@ export default function Home() {
         });
       };
       playMusicOnLoad();
-  
-      // Clean up function to stop music when component unmounts
       return () => {
         musicSound.pause();
       };
