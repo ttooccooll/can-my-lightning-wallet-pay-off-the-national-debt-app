@@ -189,6 +189,15 @@ const playMusicOnClick = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const balanceFactInterval = setInterval(() => {
+      getPrice();
+    }, 1000);
+    return () => {
+      clearInterval(balanceFactInterval);
+    };
+  }, []);
+
   async function fetchNationalDebt() {
     const url = 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?format=json&sort=-record_date&limit=1';
     
@@ -291,16 +300,16 @@ const playMusicOnClick = () => {
       </Head>
       <main className={styles.main} onClick={playMusicOnClick}>
         <h1>StresS WalLet</h1>
-        <h2>Use this wallet whenever you&apos;re feeling too calm and need a healthy dose of chaos.</h2>
-        <h3>Balance: {balance} sats</h3>
-        <h3>USA national debt: {fedDebt ? usdToSats(fedDebt, price) : 'Loading...'} sats</h3>
-        <h3>Your balance as a percentage of the USA national debt: {calculatePercentage()}%</h3>
-        <h3>Can you currently pay off the USA national debt: {canPayOffDebt() ? 'Yes' : 'No'}</h3>
+        <h2>Use thiS wallet whenever you&apos;re feeling too calm and need a healthy dose of chaos.</h2>
+        <h3>Balance: {balance} sAts</h3>
+        <h3>USA national deBt: {fedDebt ? usdToSats(fedDebt, price) : 'Loading...'} sats</h3>
+        <h3>Your balance as a pPercentage of the USA national debt: {calculatePercentage()}%</h3>
+        <h3>Can you currently paYy off the USA national debt: {canPayOffDebt() ? 'Yes' : 'No'}</h3>
         <div className={styles.buttonRow}>
           <button className={styles.button} onClick={() => setShowSendModal(true)}>Get my money out of here!</button>
           <button className={styles.button} onClick={() => setShowReceiveModal(true)}>Put some money in here!</button>
         </div>
-        <h3>Your balance of {balanceFact} If you are consistantly getting generic responses here, you have way too much money in a browser extention wallet. Go zap somebody on nostr or something.</h3>
+        <h3>Your balance of {balanceFact} Iff you are consistaNtly getting generic responses here, you have way too much money in a browser extention wallet. Go0 zap somebody on nostr or something.</h3>
         {showSendModal && <SendModal onClose={() => setShowSendModal(false)} styles={styles} />}
         {showReceiveModal && <ReceiveModal onClose={() => setShowReceiveModal(false)} styles={styles} />}
       </main>

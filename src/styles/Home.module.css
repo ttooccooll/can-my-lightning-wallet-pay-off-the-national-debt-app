@@ -1,8 +1,31 @@
+@font-face {
+  font-family: 'JollySweaterRegular';
+  src: url('/JollySweaterRegular-51gda.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'it';
+  src: url('/it.ttf') format('truetype');
+}
+
 .main {
   text-align: center;
   padding: 5vh 0;
   background: linear-gradient(135deg, #8b4513, #cd853f, red, hotpink, lime, #8fbc8f);
   color: black;
+  text-shadow: 1px 5px 6px lightgreen;
+}
+
+.main h1 {
+  font-family: 'JollySweaterRegular'
+}
+
+.main h2 {
+  font-family: 'it';
+}
+
+.main h3 {
+border: 3px double brown;
 }
 
 .modal {
