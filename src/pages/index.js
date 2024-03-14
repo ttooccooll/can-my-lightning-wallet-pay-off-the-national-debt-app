@@ -115,13 +115,20 @@ async function generateFactForNumber(number) {
 
 const fetchBalanceFact = async () => {
   try {
-      const fact = await generateFactForNumber(balance);
-      setBalanceFact(fact);
+    const fact = await generateFactForNumber(balance);
+    setBalanceFact(fact);
   } catch (error) {
-      console.error('Error fetching balance fact:', error);
-      setBalanceFact('Error fetching fact');
+    console.error('Error fetching balance fact:', error);
+    setBalanceFact('Error fetching fact');
   }
 };
+
+useEffect(() => {
+  if (balance) {
+    fetchBalanceFact();
+  }
+}, [balance]);
+
 
 useEffect(() => {
   fetchBalanceFact();
