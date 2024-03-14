@@ -1,8 +1,8 @@
 .main {
   text-align: center;
   padding: 5vh 0;
-  background-color: #1e1e1e;
-  color: #f0f0f0;
+  background: linear-gradient(135deg, #8b4513, #cd853f, #556b2f, #8fbc8f);
+  color: black;
 }
 
 .modal {
@@ -11,16 +11,20 @@
   max-width: 500px;
   transition: all 0.3s ease;
   padding: 20px;
+  background: linear-gradient(135deg, #bc8f8f, #d2b48c, #6b8e23, #b0e0e6);
 }
 
 .modal h2 {
   margin-bottom: 15px;
+  color: black;
 }
 
-.modal input, .modal button {
+.modal input,
+.modal button {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
+  background: linear-gradient(135deg, #ff8c00, #ffd700, #20b2aa, #8a2be2);
 }
 
 .modal input:focus {
@@ -29,11 +33,11 @@
 }
 
 .modal button {
-  background-color: #333;
+  background-color: #8b4513;
 }
 
 .modal button:hover {
-  background-color: #4a4a4a;
+  background-color: #2e8b57;
 }
 
 .buttonRow {

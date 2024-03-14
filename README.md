@@ -1,1 +1,1 @@
-Check and see if you can pay off the national debt with your Alby wallet.
+Check and see if you can pay off the national debt with your lightning wallet.

@@ -1,14 +1,15 @@
 body {
-  background-color: #121212;
-  color: #fff;
+  background: linear-gradient(45deg, #ff0000, #00ffff, #ff00ff, #00ff00);
+  color: #ffff00;
 }
 
 button {
-  background-color: green;
-  color: #fff;
+  background: linear-gradient(45deg, #00ff00, #ff00ff, #00ffff, #ff0000);
+  color: black;
   width: 100px;
   padding: 10px;
   cursor: pointer;
+  text-shadow: 2px 2px 2px red;
 }
 
 button:hover {
@@ -16,12 +17,12 @@ button:hover {
 }
 
 input {
-  background-color: #333;
-  color: #ddd;
+  background: linear-gradient(45deg, #00ffff, #ff0000, #00ff00, #ffff00);
+  color: #ff0000;
 }
 
 label {
-  color: #ddd;
+  color: #00ff00;
 }
 
 span {
