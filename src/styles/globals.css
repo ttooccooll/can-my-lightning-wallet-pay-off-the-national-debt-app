@@ -1,6 +1,17 @@
+@font-face {
+  font-family: 'v';
+  src: url('/v.ttf') format('truetype');
+}
+
 body {
-  background: linear-gradient(45deg, #ff0000, #00ffff, #ff00ff, #00ff00);
+  background: linear-gradient(45deg, #ff0000, #00ffff, #ff00ff, brown, #00ff00);
   color: #ffff00;
+  transform: rotate(.5deg);
+}
+
+body:hover {
+  cursor: pointer;
+  transform: rotate(-3deg);
 }
 
 button {
@@ -13,7 +24,17 @@ button {
 }
 
 button:hover {
-  opacity: 0.6;
+  cursor: auto;
+  caret-color: red;
+  border: 2px solid green;
+  background-color: yellow;
+  padding: 5px;
+  font-family: 'v';
+  font-size: 40px;
+  overflow: overflow;
+  white-space: nowrap;
+  text-position: center;
+  transform: rotate(3deg);
 }
 
 input {

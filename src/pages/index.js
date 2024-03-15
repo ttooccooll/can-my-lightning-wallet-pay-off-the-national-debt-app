@@ -11,6 +11,7 @@ import { getBalance, payInvoice, createInvoice } from '@/lightning/lnd-webln';
 function SendModal({ onClose }) {
   const [invoice, setInvoice] = useState('');
   const [paymentMessage, setPaymentMessage] = useState('');
+  const [deathPlaying, setDeathPlaying] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -25,6 +26,20 @@ function SendModal({ onClose }) {
     }
   };
 
+  const playDeathOnClick = () => {
+    if (!deathPlaying && typeof window !== 'undefined') {
+      const deathSound = new Audio("/leap.m4a");
+      deathSound.play().catch(error => {
+        console.error('Error playing d:', error);
+      });
+      setDeathPlaying(true);
+  
+      deathSound.addEventListener('ended', () => {
+        setDeathPlaying(false);
+      });
+    }
+  };
+
   return (
     <div className={styles.modal}>
       <h2>Send Invoice</h2>
@@ -33,9 +48,9 @@ function SendModal({ onClose }) {
         <br />
         <input type="text" value={invoice} onChange={e => setInvoice(e.target.value)} />
         <br />
-        <button className={styles.button} type="submit">Submit</button>
+        <button className={styles.button} type="submit" onClick={playDeathOnClick}>DO IT NOW!</button>
       </form>
-      <button className={styles.button} onClick={onClose}>Close</button>
+      <button className={styles.button} onClick={() => { onClose(); playDeathOnClick(); }}>GO AWAYYY!</button>
       {paymentMessage && <p>{paymentMessage}</p>}
     </div>
   );
@@ -45,6 +60,7 @@ function ReceiveModal({ onClose }) {
   const [amount, setAmount] = useState('');
   const [invoice, setInvoice] = useState('');
   const [message, setMessage] = useState('');
+  const [deathPlaying, setDeathPlaying] = useState(false);
   
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -57,6 +73,20 @@ function ReceiveModal({ onClose }) {
     }
   };
 
+  const playDeathOnClick = () => {
+    if (!deathPlaying && typeof window !== 'undefined') {
+      const deathSound = new Audio("/leap.m4a");
+      deathSound.play().catch(error => {
+        console.error('Error playing d:', error);
+      });
+      setDeathPlaying(true);
+  
+      deathSound.addEventListener('ended', () => {
+        setDeathPlaying(false);
+      });
+    }
+  };
+
   return (
     <div className={styles.modal}>
       <h2>Receive Amount</h2>
@@ -65,9 +95,9 @@ function ReceiveModal({ onClose }) {
         <br />
         <input type="number" value={amount} onChange={e => setAmount(e.target.value)} />
         <br />
-        <button className={styles.button} type="submit">Submit</button>
+        <button className={styles.button} type="submit" onClick={playDeathOnClick}>DOOOOO ITTITTT!</button>
       </form>
-      <button className={styles.button} onClick={onClose}>Close</button>
+      <button className={styles.button} onClick={() => { onClose(); playDeathOnClick(); }}>GO AWAY!</button>
       {invoice ? (
         <>
           <p>{message}</p>
@@ -92,6 +122,7 @@ export default function Home() {
   const [price, setPrice] = useState(null);
   const [balanceFact, setBalanceFact] = useState('');
   const [musicPlaying, setMusicPlaying] = useState(false);
+  const [jumpPlaying, setJumpPlaying] = useState(false);
 
 // Function to generate a historical fact for a specific number
 async function generateFactForNumber(number) {
@@ -136,14 +167,41 @@ useEffect(() => {
 
 const playMusicOnClick = () => {
   if (!musicPlaying && typeof window !== 'undefined') {
-    const musicSound = new Audio("/Eric.wav");
-    musicSound.play().catch(error => {
-      console.error('Error playing music:', error);
-    });
-    setMusicPlaying(true);
+    const musicSound1 = new Audio("/1.wav");
+    const musicSound2 = new Audio("/Eric.wav");
 
-    musicSound.addEventListener('ended', () => {
+    musicSound1.play().catch(error => {
+      console.error('Error playing first music:', error);
+    });
+
+    musicSound1.addEventListener('ended', () => {
+      // When the first audio finishes, play the second audio
+      musicSound2.play().catch(error => {
+        console.error('Error playing second music:', error);
+      });
+    });
+
+    // Event listener to update state when second audio ends
+    musicSound2.addEventListener('ended', () => {
       setMusicPlaying(false);
+    });
+
+    // Update state to indicate music is playing
+    setMusicPlaying(true);
+  }
+};
+
+
+const playJumpOnClick = () => {
+  if (!jumpPlaying && typeof window !== 'undefined') {
+    const jumpSound = new Audio("/jump.m4a");
+    jumpSound.play().catch(error => {
+      console.error('Error pl:', error);
+    });
+    setJumpPlaying(true);
+
+    jumpSound.addEventListener('ended', () => {
+      setJumpPlaying(false);
     });
   }
 };
@@ -299,17 +357,17 @@ const playMusicOnClick = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main} onClick={playMusicOnClick}>
-        <h1>StresS WalLet</h1>
+        <h1>     StresS WalLet</h1>
         <h2>Use thiS wallet whenever you&apos;re feeling too calm and need a healthy dose of chaos.</h2>
         <h3>Balance: {balance} sAts</h3>
-        <h3>USA national deBt: {fedDebt ? usdToSats(fedDebt, price) : 'Loading...'} sats</h3>
-        <h3>Your balance as a pPercentage of the USA national debt: {calculatePercentage()}%</h3>
-        <h3>Can you currently paYy off the USA national debt: {canPayOffDebt() ? 'Yes' : 'No'}</h3>
+        <h3>US national deBt: {fedDebt ? usdToSats(fedDebt, price) : 'Loading...'} sats      </h3>
+        <h4>Your balance as a pPercentage of the US national debt: {calculatePercentage()}%</h4>
+        <h5>Can you currently pay off the US national debt: {canPayOffDebt() ? 'YES' : 'NO'}</h5>
         <div className={styles.buttonRow}>
-          <button className={styles.button} onClick={() => setShowSendModal(true)}>Get my money out of here!</button>
-          <button className={styles.button} onClick={() => setShowReceiveModal(true)}>Put some money in here!</button>
+          <button className={styles.button} onClick={() => { setShowSendModal(true); playJumpOnClick();}}>Get my money out of here!</button>
+          <button className={styles.button} onClick={() => { setShowReceiveModal(true); playJumpOnClick();}}>Put some money in here!</button>
         </div>
-        <h3>Your balance of {balanceFact} Iff you are consistaNtly getting generic responses here, you have way too much money in a browser extention wallet. Go0 zap somebody on nostr or something.</h3>
+        <h6>Your balance of {balanceFact} Iff you are consistaNtly getting generic responses here, you have way too much money in a browser extention wallet. Go0 zap somebody on nostr or something.</h6>
         {showSendModal && <SendModal onClose={() => setShowSendModal(false)} styles={styles} />}
         {showReceiveModal && <ReceiveModal onClose={() => setShowReceiveModal(false)} styles={styles} />}
       </main>
