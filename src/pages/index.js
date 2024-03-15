@@ -28,7 +28,7 @@ function SendModal({ onClose }) {
 
   const playDeathOnClick = () => {
     if (!deathPlaying && typeof window !== 'undefined') {
-      const deathSound = new Audio("/leap.m4a");
+      const deathSound = new Audio("/Leap.wav");
       deathSound.play().catch(error => {
         console.error('Error playing d:', error);
       });
@@ -75,7 +75,7 @@ function ReceiveModal({ onClose }) {
 
   const playDeathOnClick = () => {
     if (!deathPlaying && typeof window !== 'undefined') {
-      const deathSound = new Audio("/leap.m4a");
+      const deathSound = new Audio("/Leap.wav");
       deathSound.play().catch(error => {
         console.error('Error playing d:', error);
       });
@@ -194,7 +194,7 @@ const playMusicOnClick = () => {
 
 const playJumpOnClick = () => {
   if (!jumpPlaying && typeof window !== 'undefined') {
-    const jumpSound = new Audio("/jump.m4a");
+    const jumpSound = new Audio("/Jump.wav");
     jumpSound.play().catch(error => {
       console.error('Error pl:', error);
     });
