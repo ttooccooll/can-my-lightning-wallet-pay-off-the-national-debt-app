@@ -371,6 +371,9 @@ const playJumpOnClick = () => {
         {showSendModal && <SendModal onClose={() => setShowSendModal(false)} styles={styles} />}
         {showReceiveModal && <ReceiveModal onClose={() => setShowReceiveModal(false)} styles={styles} />}
       </main>
+      <a href="https://bitcoin-chess.vercel.app" target="_blank">Play Bitcoin Chess</a>
+      <a href="https://bitcoin-battleship.vercel.app" target="_blank">Play Bitcoin Battleship</a>
+      <a href="https://national-debt-snake.vercel.app" target="_blank">Play National Debt Snake</a>
     </>
   )
 }
