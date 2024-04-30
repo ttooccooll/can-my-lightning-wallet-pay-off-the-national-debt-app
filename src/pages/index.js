@@ -124,8 +124,8 @@ export default function Home() {
   const [musicPlaying, setMusicPlaying] = useState(false);
   const [jumpPlaying, setJumpPlaying] = useState(false);
 
-// Function to generate a historical fact for a specific number
-async function generateFactForNumber(number) {
+
+  async function generateFactForNumber(number) {
   const apiUrl = `http://numbersapi.com/${number}/math`;
   
   try {
@@ -155,15 +155,18 @@ const fetchBalanceFact = async () => {
 };
 
 useEffect(() => {
-  if (balance) {
-    fetchBalanceFact();
-  }
-}, [balance]);
+  const fetchBalanceFactInterval = async () => {
+    if (balance) {
+      await fetchBalanceFact();
+    }
+  };
 
-
-useEffect(() => {
-  fetchBalanceFact();
-}, [balance]);
+fetchBalanceFactInterval();
+const intervalId = setInterval(fetchBalanceFactInterval, 3000);
+return () => {
+  clearInterval(intervalId);
+};
+},);
 
 const playMusicOnClick = () => {
   if (!musicPlaying && typeof window !== 'undefined') {
